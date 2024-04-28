@@ -79,7 +79,7 @@ export const getAbsensiById = async (req, res) => {
 };
 
 export const createAbsensi = async (req, res) => {
-    const { nokartu, jam_masuk, jam_keluar } = req.body;
+    const { nokartu, jam_masuk, jam_keluar, createdAt } = req.body;
     const currentDate = new Date().toLocaleDateString();
     try {
         await Absen.create({
@@ -88,6 +88,7 @@ export const createAbsensi = async (req, res) => {
             jam_keluar: jam_keluar,
             tanggal: currentDate,
             userId: req.userId,
+            createdAt: createdAt,
         });
         res.status(201).json({ msg: 'Absen Created Successfuly' });
     } catch (error) {
