@@ -24,9 +24,11 @@ const store = new sessionStore({
 });
 
 // (async () => {
-//     await Absen.sync({ force: true });
+//     // await Absen.sync({ force: true });
 //     await db.sync();
 // })();
+
+// db.sync();
 
 app.use(
     session({
@@ -43,7 +45,7 @@ app.use(
 app.use(
     cors({
         credentials: true,
-        origin: 'http://localhost:3000',
+        origin: 'http://localhost:3000', // ganti alamat ip server front-end
     })
 );
 app.use(express.json());
