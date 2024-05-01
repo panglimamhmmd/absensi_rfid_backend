@@ -45,7 +45,7 @@ app.use(
 app.use(
     cors({
         credentials: true,
-        origin: 'http://localhost:3000', // ganti alamat ip server front-end
+        origin: 'https://absensi-rfid-frontend-git-local-database-panglimas-projects.vercel.app', // ganti alamat ip server front-end
     })
 );
 app.use(express.json());
