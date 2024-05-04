@@ -4,7 +4,8 @@ import session from 'express-session';
 import dotenv from 'dotenv';
 import db from './config/Database.js';
 import SequelizeStore from 'connect-session-sequelize';
-
+import fs from 'fs';
+import https from 'https';
 // routes
 import UserRoute from './routes/UserRoute.js';
 import ProductRoute from './routes/ProductRoute.js';
@@ -58,6 +59,21 @@ app.use(TmpRfidRoute);
 
 // store.sync();
 
-app.listen(process.env.APP_PORT, () => {
-    console.log(`Server up and running at port ${process.env.APP_PORT} `);
-});
+// SSL Instalation
+
+var privateKey = fs.readFileSync('./cert/privatekey.pem');
+var certificate = fs.readFileSync('./cert/originkey.pem');
+
+https
+    .createServer(
+        {
+            key: privateKey,
+            cert: certificate,
+        },
+        app
+    )
+    .listen(process.env.APP_PORT);
+
+// app.listen(process.env.APP_PORT, () => {
+//     console.log(`Server up and running at port ${process.env.APP_PORT} `);
+// });
