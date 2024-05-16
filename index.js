@@ -37,8 +37,10 @@ app.use(
         resave: false,
         saveUninitialized: true,
         store: store,
+        proxy: true,
         cookie: {
             secure: 'auto',
+            sameSite: 'none',
         },
     })
 );
@@ -46,7 +48,7 @@ app.use(
 app.use(
     cors({
         credentials: true,
-        origin: 'https://absensibm.netlify.app/', // ganti alamat ip server front-end
+        origin: `${process.env.CLIENT_DOMAIN}`, // ganti alamat ip server front-end
     })
 );
 app.use(express.json());
@@ -61,19 +63,19 @@ app.use(TmpRfidRoute);
 
 // SSL Instalation
 
-var privateKey = fs.readFileSync('./cert/privatekey.pem');
-var certificate = fs.readFileSync('./cert/originkey.pem');
+// var privateKey = fs.readFileSync('./cert/privatekey.pem');
+// var certificate = fs.readFileSync('./cert/originkey.pem');
 
-https
-    .createServer(
-        {
-            key: privateKey,
-            cert: certificate,
-        },
-        app
-    )
-    .listen(process.env.APP_PORT);
+// https
+//     .createServer(
+//         {
+//             key: privateKey,
+//             cert: certificate,
+//         },
+//         app
+//     )
+//     .listen(process.env.APP_PORT);
 
-// app.listen(process.env.APP_PORT, () => {
-//     console.log(`Server up and running at port ${process.env.APP_PORT} `);
-// });
+app.listen(process.env.APP_PORT, () => {
+    console.log(`Server up and running at port ${process.env.APP_PORT} `);
+});
