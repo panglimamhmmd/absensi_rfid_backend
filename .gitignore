@@ -1,5 +1,7 @@
 node_modules
 .env
 request.rest
-
+local.rest
 /cert
+
+salarynote.txt

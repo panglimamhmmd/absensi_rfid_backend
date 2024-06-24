@@ -1,10 +1,12 @@
+import Absen from '../models/AbsenModel.js';
 import User from '../models/UserModel.js';
 import argon2 from 'argon2';
+import { Sequelize } from 'sequelize';
 
 export const getUsers = async (req, res) => {
     try {
         const response = await User.findAll({
-            attributes: ['uuid', 'name', 'email', 'role'],
+            attributes: ['uuid', 'name', 'email', 'role', 'createdAt'],
         });
         res.status(200).json(response);
     } catch (error) {
@@ -15,7 +17,7 @@ export const getUsers = async (req, res) => {
 export const getUserById = async (req, res) => {
     try {
         const response = await User.findOne({
-            attributes: ['uuid', 'name', 'nokartu', 'email', 'role'],
+            attributes: ['uuid', 'name', 'email', 'role'],
             where: {
                 uuid: req.params.id,
             },
@@ -27,8 +29,7 @@ export const getUserById = async (req, res) => {
 };
 
 export const createUser = async (req, res) => {
-    const { uuid, name, nokartu, email, password, confPassword, role } =
-        req.body;
+    const { name, nokartu, email, password, confPassword, role } = req.body;
     if (password !== confPassword)
         return res
             .status(400)
@@ -36,7 +37,7 @@ export const createUser = async (req, res) => {
     const hashPassword = await argon2.hash(password);
     try {
         await User.create({
-            uuid: uuid,
+            uuid: nokartu,
             name: name,
             nokartu: nokartu,
             email: email,
@@ -100,6 +101,13 @@ export const deleteUser = async (req, res) => {
                 id: user.id,
             },
         });
+        // cascade delete
+        await Absen.destroy({
+            where: {
+                userId: user.id,
+            },
+        });
+
         res.status(200).json({ msg: 'User Deleted' });
     } catch (error) {
         res.status(400).json({ msg: error.message });

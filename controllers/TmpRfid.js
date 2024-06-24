@@ -40,8 +40,17 @@ export const createNoKartu = async (req, res) => {
     const userName = match.name;
     const currentDate = new Date().toLocaleDateString(); // ambil waktu saat ini
     let time = new Date();
-    const jam = `${time.getHours()}:${time.getMinutes()}`;
 
+    const hours =
+        time.getHours().toString().length == 1
+            ? `0${time.getHours()}`
+            : time.getHours().toString();
+    const minutes =
+        time.getMinutes().toString().length == 1
+            ? `0${time.getMinutes()}`
+            : time.getMinutes().toString();
+
+    const jam = `${hours}:${minutes}`;
     if (mode == 1) {
         // cek jika sudah absensi sebelumnya
         const user = await Absen.findOne({

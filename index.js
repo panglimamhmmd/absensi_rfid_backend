@@ -12,7 +12,6 @@ import ProductRoute from './routes/ProductRoute.js';
 import AuthRoute from './routes/AuthRoute.js';
 import AbsensiRoute from './routes/AbsensiRoute.js';
 import TmpRfidRoute from './routes/TmpRfidRoute.js';
-import Absen from './models/AbsenModel.js';
 
 dotenv.config();
 
@@ -23,11 +22,6 @@ const sessionStore = SequelizeStore(session.Store);
 const store = new sessionStore({
     db: db,
 });
-
-// (async () => {
-//     // await Absen.sync({ force: true });
-//     await db.sync();
-// })();
 
 // db.sync();
 
@@ -40,7 +34,7 @@ app.use(
         proxy: true,
         cookie: {
             secure: 'auto',
-            sameSite: 'none',
+            // sameSite: 'none',
         },
     })
 );
